@@ -44,6 +44,18 @@ def cmd_stats(args: argparse.Namespace) -> None: #  özet istatistikleri göster
     for name, count in priorities.items():
         print(f" {name}: {count}")
 
+def cmd_remove(args: argparse.Namespace) -> None: # verilen ID'ye sahip görevi siler (!!ID eşleşmeyen herkesi tut)
+    tasks = load_tasks(TASKS_FILE)
+    remaining = [t for t in tasks if t.id != args.id]
+    if len(remaining) == len(tasks): # edge case kontrolü (çıktı yoksa siler)
+        print(f"Hata: {args.id} ID'li görev bulunamadı")
+        return
+    save_tasks(TASKS_FILE, remaining)
+    print(f"Görev {args.id} silindi")
+
+
+
+
 def build_parser() -> argparse.ArgumentParser: # komut-argüman tanımlar 
     parser = argparse.ArgumentParser(description="Görev yöneticisi")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -67,6 +79,10 @@ def build_parser() -> argparse.ArgumentParser: # komut-argüman tanımlar
 
     p_stats = sub.add_parser("stats", help="İstatistikleri göster")
     p_stats.set_defaults(func=cmd_stats)
+
+    p_remove = sub.add_parser("remove", help="Bir görevi sil")
+    p_remove.add_argument("id", type=int, help="Görev numarası")
+    p_remove.set_defaults(func=cmd_remove)
 
     return parser
 

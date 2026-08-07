@@ -35,6 +35,6 @@ class Task:
         )
 
     def __repr__(self) -> str: #nesneyi okunur biçimde göster
-        status = '+' if self.done else '-'
+        status = 'tamamlandı' if self.done else 'yapılmadı'
         return f'[{status}] #{self.id} {self.title} ({self.priority})'
     
