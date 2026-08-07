@@ -1,3 +1,4 @@
+#görevleri temsil eden sınıf (veri ne?)
 from __future__ import annotations
 
 class Task:

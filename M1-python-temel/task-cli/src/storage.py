@@ -1,3 +1,4 @@
+#görevleri JSON dosyasına kaydet/oku (nasıl saklanır?)
 from __future__ import annotations
 import json
 
