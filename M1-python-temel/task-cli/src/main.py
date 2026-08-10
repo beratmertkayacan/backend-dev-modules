@@ -53,6 +53,14 @@ def cmd_remove(args: argparse.Namespace) -> None: # verilen ID'ye sahip görevi 
     save_tasks(TASKS_FILE, remaining)
     print(f"Görev {args.id} silindi")
 
+def cmd_clear(args: argparse.Namespace) -> None: # tamamlanmış görevleri siler
+    tasks = load_tasks(TASKS_FILE)
+    remaining = [t for t in tasks if not t.done]
+    removed = len(tasks) - len(remaining)
+    save_tasks(TASKS_FILE, remaining)
+    print(f"Tamamlanmış {removed} görevi silindi")
+
+
 
 
 
@@ -83,6 +91,9 @@ def build_parser() -> argparse.ArgumentParser: # komut-argüman tanımlar
     p_remove = sub.add_parser("remove", help="Bir görevi sil")
     p_remove.add_argument("id", type=int, help="Görev numarası")
     p_remove.set_defaults(func=cmd_remove)
+
+    p_clear = sub.add_parser("clear", help = "Tamamlanmış görevleri sil")
+    p_clear.set_defaults(func=cmd_clear)
 
     return parser
 
