@@ -1,10 +1,11 @@
-"""Veritabanı oluştur, 'customers' ve 'orders' tablolarını doldur, ilişki oku"""
+""" ORM scripti (ham SQL,GUI(DB browser),FastAPI alternatifleri) Veritabanı oluştur, 'customers' ve 'orders' tablolarını doldur, ilişki oku"""
 from sqlalchemy import func
 from database import Base, engine, SessionLocal
 from models import Customer, Order
 
-# 1-Tabloları oluştur
-Base.metadata.create_all(bind = engine)
+# 1-Tabloları sıfırla ve yeniden oluştur (sadece play.py verisi kalsın)
+Base.metadata.drop_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 db = SessionLocal()
 
 
@@ -32,3 +33,13 @@ db.add(musteri2)
 db.commit()
 db.refresh(musteri2)
 print(f"Müşteri 2 eklendi: {musteri2.id} - {musteri2.name}")
+
+musteri3 = Customer(name = "Batuhan Pakder", email = "batuhan.pakder@gmail.com")
+musteri3.orders = [
+    Order(product_name = "MacBook-Pro", price = 83000.0),
+    Order(product_name = "Iphone15", price = 56000.0),
+]
+db.add(musteri3)
+db.commit()
+db.refresh(musteri3)
+print(f"Müşteri 3 eklendi: {musteri3.id} - {musteri3.name}")
